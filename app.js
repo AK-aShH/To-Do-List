@@ -3,8 +3,13 @@ const bodyParser = require('body-parser');
 const ejs = require('ejs');
 const mongoose = require('mongoose');
 const _ = require("lodash");
+const connectDB = require('./src/config/db');
 const date = require(__dirname +"/date.js");
 const app = express();
+
+const {Item} = require('./src/models/items');
+const {List} = require('./src/models/lists');
+const User = require('./src/models/users');
 
 
 app.set('view engine', 'ejs');
@@ -12,23 +17,7 @@ app.use(express.static('public'));
 app.use(bodyParser.urlencoded({extended: true}));
 
 // Database connection
-mongoose.connect("mongodb+srv://admin-akash:Test36437@cluster0.uaeiwmm.mongodb.net/TodoList");
-const itemsSchema = new mongoose.Schema(
-    {
-        name: String
-    }
-);
-
-const Item = mongoose.model("Item",itemsSchema);
-const listsSchema = new mongoose.Schema(
-    {
-        name: String,
-        items: [itemsSchema]
-    }
-);
-
-const List = mongoose.model("List",listsSchema);
-
+connectDB();
 
 app.get("/", function(req, res){
     let day = date.newDate();
