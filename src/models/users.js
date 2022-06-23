@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
-const {itemsSchema} = require('./src/models/items');
-const {listsSchema} = require('./src/models/lists');
+const {itemsSchema} = require('./items');
+const {listsSchema} = require('./lists');
 
 const userSchema = new mongoose.Schema({
     email: String,
@@ -9,9 +9,9 @@ const userSchema = new mongoose.Schema({
     googleId: String,
     facebookId: String,
     lists: [listsSchema],
-    items: [itemsSchema]
+    item: [itemsSchema]
 });
 
 const User = mongoose.model('User', userSchema);
 
-module.exports = User;
+module.exports = {User, userSchema};

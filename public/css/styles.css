@@ -56,7 +56,7 @@ form.item {
   margin-left: 20px;
 }
 
-button {
+button.list-btn {
   min-height: 50px;
   width: 50px;
   border-radius: 50%;

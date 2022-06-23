@@ -8,5 +8,5 @@ const itemsSchema = new mongoose.Schema(
 
 const Item = mongoose.model("Item",itemsSchema);
 
-module.exports.Item = Item;
-module.exports.itemsSchema = itemsSchema;
+module.exports = {Item, itemsSchema};
+// module.exports.i = itemsSchema;
