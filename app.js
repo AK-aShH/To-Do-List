@@ -120,6 +120,7 @@ app.get("/home", function(req, res){
 app.get("/:name", function(req, res){
     if(req.isAuthenticated){
         const customListName = _.capitalize(req.params.name);
+        console.log(customListName);
     User.findById(req.user.id, function(err, user){
         if(err){
             console.log(err);
