@@ -8,7 +8,7 @@ const date = require("./date");
 
 const {Item} = require('./src/models/items');
 const {List} = require('./src/models/lists');
-const {User, userSchema} = require('./src/models/users');
+const {userSchema} = require('./src/models/users');
 
 const session = require('express-session');
 const passport = require('passport');
@@ -39,6 +39,8 @@ connectDB();
 
 userSchema.plugin(passportLocalMongoose);
 userSchema.plugin(findOrCreate); //plugin for findorcreate 
+
+const {User} = require('./src/models/users');
 
 passport.serializeUser(function(user, done){
     done(null, user.id);
