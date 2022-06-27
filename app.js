@@ -40,7 +40,7 @@ connectDB();
 userSchema.plugin(passportLocalMongoose);
 userSchema.plugin(findOrCreate); //plugin for findorcreate 
 
-const {User} = require('./src/models/users');
+const User = mongoose.model('User', userSchema);
 
 passport.serializeUser(function(user, done){
     done(null, user.id);
