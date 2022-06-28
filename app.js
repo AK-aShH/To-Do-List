@@ -68,19 +68,19 @@ passport.use(new GoogleStrategy({
 ));
 
 // configuring Facebook strategy
-// passport.use(new FacebookStrategy({
-//     clientID: process.env.FACEBOOK_APP_ID,
-//     clientSecret: process.env.FACEBOOK_APP_SECRET,
-//     callbackURL: "https://limitless-ridge-35510.herokuapp.com/auth/facebook/todolist",
-//     },
-//     function(accessToken, refreshToken, profile, cb) { // gets called when the user is authenticated successfully by facebook
+passport.use(new FacebookStrategy({
+    clientID: process.env.FACEBOOK_APP_ID,
+    clientSecret: process.env.FACEBOOK_APP_SECRET,
+    callbackURL: "https://limitless-ridge-35510.herokuapp.com/auth/facebook/todolist",
+    },
+    function(accessToken, refreshToken, profile, cb) { // gets called when the user is authenticated successfully by facebook
     
-//         console.log(profile);
-//         User.findOrCreate({ facebookId: profile.id }, function (err, user) {
-//             return cb(err, user);
-//         });
-//     })
-// );
+        console.log(profile);
+        User.findOrCreate({ facebookId: profile.id }, function (err, user) {
+            return cb(err, user);
+        });
+    })
+);
 
 app.get('/', (req, res) => {
     res.render('home');
@@ -95,14 +95,14 @@ app.get('/auth/google/todolist', passport.authenticate('google', { failureRedire
     res.redirect('/home');
 });
 
-// app.get('/auth/facebook', 
-// passport.authenticate('facebook')); // initiate authentication on facebook servers asking for user's profile
+app.get('/auth/facebook', 
+passport.authenticate('facebook')); // initiate authentication on facebook servers asking for user's profile
 
-// // requested by facebook to authenticate locally
-// app.get('/auth/facebook/todolist', passport.authenticate('facebook', { failureRedirect: '/' }), function(req, res) {
-//     // Successful authentication, redirect home.
-//     res.redirect('/home');
-// });
+// requested by facebook to authenticate locally
+app.get('/auth/facebook/todolist', passport.authenticate('facebook', { failureRedirect: '/' }), function(req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('/home');
+});
 
 
 app.get("/home", function(req, res){
