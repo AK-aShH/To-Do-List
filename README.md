@@ -9,6 +9,6 @@ A To-Do-List where you can add, delete new task and create as many list you want
 ## Steps to setup the project
 1. Go to the project folder and run `npm install` to install all the dependencies.
 2. Now, start the server by running `nodemom app.js` .
-3. Now open your browser and go to `http://localhost:3000` to test the project.
+3. Now open your browser and go to `http://localhost:5000` to test the project.
 
 ## Hosted on Heroku : [To-Do-List](https://limitless-ridge-35510.herokuapp.com/)
