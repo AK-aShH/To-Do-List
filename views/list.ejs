@@ -15,10 +15,31 @@
             </div>
         <% } %>
     
-    <form class="item" action="/" method="post">
-        <input type="text" name="task" placeholder="New Item" autocomplete="off">
-        <button type="submit" class="list-btn" name="button" value="<%= listTitle %>" >+</button>
-    </form>
-</div>
+        <form class="item" action="/" method="post">
+            <input type="text" name="task" placeholder="New Item" autocomplete="off">
+            <button type="submit" class="list-btn" name="button" value="<%= listTitle %>" >+</button>
+        </form>
+    </div>
+
+    <div class="button-div">
+        <button class="home-btn" style="margin-right: 30px ;">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span> <a href="/logout" style="color:#A683E3; text-decoration: none;"> <i class="fas fa-sign-out-alt"></i>
+                Log Out
+            </a> 
+          </button>
+          <button class="home-btn"style="margin-left: 30px ;">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span><a href="/mylists" style="color:#A683E3; text-decoration: none;">
+                My lists
+            </a> 
+          </button>
+    </div>
+
+
 
 <%- include("footer")  -%> 

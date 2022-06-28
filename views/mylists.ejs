@@ -1,0 +1,45 @@
+<%- include("header")  -%> 
+
+<link rel="stylesheet" href="/css/home.css">
+</head>
+<body>
+
+    <div class="box" id="heading">
+        <h1 style="color: #000;"><i class="fa-solid fa-list-check"></i>  My Lists</h1>
+    </div>
+    <div class="box">
+        <% lists.forEach(function(list){ %>
+            <div class="item">
+                <form action="/deleteList" method="post" >
+                    <input type="checkbox" name="checkbox" value="<%= list._id %>" onchange="this.form.submit()">
+                </form>
+                <a href="/home/<%= list.name %>"><p><%= list.name %></p> </a>
+            </div>
+       <% }) %> 
+        
+       <form class="item" action="/newList" method="post">
+            <input type="text" name="listName" placeholder="New List" autocomplete="off">
+            <button type="submit" class="list-btn" >+</button>
+        </form>
+    </div>
+    <div class="button-div">
+        <button class="home-btn" style="margin-right: 30px ;">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span> <a href="/logout" style="color:#A683E3; text-decoration: none;"> <i class="fas fa-sign-out-alt"></i>
+                Log out
+            </a> 
+          </button>
+          <button class="home-btn"style="margin-left: 30px ;">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span><a href="/home" style="color:#A683E3; text-decoration: none;"> <i class="fas fa-home"></i>
+                Home
+            </a> 
+          </button>
+    </div>
+
+
+<%- include("footer")  -%> 

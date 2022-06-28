@@ -117,7 +117,7 @@ app.get("/home", function(req, res){
     });
 })
 
-app.get("/:name", function(req, res){
+app.get("/home/:name", function(req, res){
     if(req.isAuthenticated){
         const customListName = _.capitalize(req.params.name);
         console.log(customListName);
@@ -129,7 +129,7 @@ app.get("/:name", function(req, res){
                             user: req.user.id
                         });
                         newList.save();
-                        res.redirect("/" + customListName);
+                        res.redirect("/home/" + customListName);
                 }
                 else {
                     res.render("list", {listTitle: foundList.name, newListItems: foundList.items});
@@ -139,6 +139,32 @@ app.get("/:name", function(req, res){
     else{
         res.redirect("/");
     }
+});
+
+app.get("/mylists", function(req, res){
+    if(req.isAuthenticated){
+        List.find({user: req.user.id}, function(err, foundLists){
+            if(err){
+                console.log(err);
+            }
+            else {
+                res.render("mylists", {lists: foundLists});
+            }
+        });
+    }
+    else{
+        res.redirect("/");
+    }
+});
+
+app.get("/logout", function(req, res){
+    req.logout(function(err) {
+        if (err) {
+            console.log(err); 
+        }else{
+            res.redirect('/');
+        }
+      });
 });
 
 
@@ -155,14 +181,14 @@ app.post("/", function(req, res){
         User.findById(req.user.id, function(err, foundUser){
             foundUser.item.push(item);
             foundUser.save();
-            res.redirect("/");
+            res.redirect("/home");
         });
     }
     else{
         List.findOne({name: listTitle, user: req.user.id}, function(err, foundList){
             foundList.items.push(item);
             foundList.save();
-            res.redirect("/" + listTitle);
+            res.redirect("/home/" + listTitle);
         });
     }
 });
@@ -176,17 +202,40 @@ app.post("/delete", function(req, res){
     if(listName === day){
         User.findByIdAndUpdate(req.user.id, {$pull: {item: {_id: req.body.checkbox}}}, function(err, foundUser){
             if(!err){
-                res.redirect("/");
+                res.redirect("/home");
             }
         });
     }
     else{
         List.findOneAndUpdate({name: listName, user: req.user.id}, {$pull: {items: {_id: req.body.checkbox}}}, function(err, foundList){
             if(!err){
-                res.redirect("/" + listName);
+                res.redirect("/home/" + listName);
             }
         });
     }
+})
+
+app.post("/deleteList", function(req, res){
+    List.findOneAndDelete({_id: req.body.checkbox, user: req.user.id}, function(err, foundList){
+        if(!err){
+            res.redirect("/mylists");
+        }
+    }
+    );
+})
+
+app.post("/newList", function(req, res){
+    const listName = req.body.listName;
+    const newList = new List({
+        name: listName,
+        items: [],
+        user: req.user.id
+    });
+    newList.save(function(err){
+        if(!err){
+            res.redirect("/home/" + listName);
+        }
+    });
 })
 
 
