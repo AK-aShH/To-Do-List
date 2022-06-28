@@ -13,7 +13,7 @@
                 <form action="/deleteList" method="post" >
                     <input type="checkbox" name="checkbox" value="<%= list._id %>" onchange="this.form.submit()">
                 </form>
-                <a href="/home/<%= list.name %>"><p><%= list.name %></p> </a>
+                <a href="/home/<%= list.name %>" style="text-decoration: none;" ><p><%= list.name %></p> </a>
             </div>
        <% }) %> 
         
