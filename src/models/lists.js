@@ -5,7 +5,11 @@ const { itemsSchema }= require('./items');
 const listsSchema = new mongoose.Schema(
     {
         name: String,
-        items: [itemsSchema]
+        items: [itemsSchema],
+        user: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
+        }
     }
 );
 

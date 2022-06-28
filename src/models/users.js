@@ -8,7 +8,6 @@ const userSchema = new mongoose.Schema({
     password: String,
     googleId: String,
     facebookId: String,
-    lists: [listsSchema],
     item: [itemsSchema]
 });
 

@@ -121,26 +121,20 @@ app.get("/:name", function(req, res){
     if(req.isAuthenticated){
         const customListName = _.capitalize(req.params.name);
         console.log(customListName);
-    User.findById(req.user.id, function(err, user){
-        if(err){
-            console.log(err);
-        } else {
-            List.findOne({name: customListName, _id: {$in: user.lists}}, function(err, foundList){
+            List.findOne({name: customListName, user: req.user.id}, function(err, foundList){
                 if(!foundList){
                     const newList = new List({
                             name: customListName,
-                            items: []
+                            items: [],
+                            user: req.user.id
                         });
-                        user.lists.push(newList);
-                        user.save();
+                        newList.save();
                         res.redirect("/" + customListName);
                 }
                 else {
                     res.render("list", {listTitle: foundList.name, newListItems: foundList.items});
                 }
             });
-        }
-    });
     }
     else{
         res.redirect("/");
@@ -157,28 +151,20 @@ app.post("/", function(req, res){
    const listTitle = req.body.button;
 //    console.log(listTitle);
 
-User.findById(req.user.id,function(err, user){
-    if(err){
-        console.log(err);
-    }else
-    if(user){
-        List.findOne({name: listTitle, _id: {$in: user.lists}}, function(err, foundList){
-            if(!foundList){
-                user.item.push(item);
-                user.save(function(){
-                    res.redirect("/home");
-                });
-            }
-            else {
-                foundList.items.push(item);
-                foundList.save();
-                user.save(function(){
-                    res.redirect("/" + listTitle);
-                });
-            }
+    if(listTitle === date.newDate()){
+        User.findById(req.user.id, function(err, foundUser){
+            foundUser.item.push(item);
+            foundUser.save();
+            res.redirect("/");
         });
     }
-    });
+    else{
+        List.findOne({name: listTitle, user: req.user.id}, function(err, foundList){
+            foundList.items.push(item);
+            foundList.save();
+            res.redirect("/" + listTitle);
+        });
+    }
 });
 
 
@@ -187,33 +173,20 @@ app.post("/delete", function(req, res){
     const listName = req.body.listName;
     let day = date.newDate();
 
-    User.findById(req.user.id, function(err, user){
-        if(err){
-            console.log(err);
-        }
-        else {
-            if(listName === day){
-                Item.findByIdAndRemove({_id: req.body.checkbox, _id: {$in: user.item}}, function(err){
-                    if(err){
-                        console.log(err);
-                    }
-                    else {
-                        res.redirect("/home");
-                    }
-                });
+    if(listName === day){
+        User.findByIdAndUpdate(req.user.id, {$pull: {item: {_id: req.body.checkbox}}}, function(err, foundUser){
+            if(!err){
+                res.redirect("/");
             }
-            else {
-                List.findOneAndUpdate({name: listName, _id: {$in: user.lists}}, {$pull: {items: {_id: req.body.checkbox}}}, function(err, foundList){
-                    if(err){
-                        console.log(err);
-                    }
-                    else {
-                        res.redirect("/" + listName);
-                    }
-                });
+        });
+    }
+    else{
+        List.findOneAndUpdate({name: listName, user: req.user.id}, {$pull: {items: {_id: req.body.checkbox}}}, function(err, foundList){
+            if(!err){
+                res.redirect("/" + listName);
             }
-        }
-    });
+        });
+    }
 })
 
 
